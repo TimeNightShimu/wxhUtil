@@ -48,3 +48,60 @@ function darkenColor(color, percent) {
     ).toString(16).slice(1);
   return newColor;
 }
+
+/**
+ * @函数功能   {[判断传入字符串是否为数字]}
+ * @param  {[string]} data 传入字符串
+ * @return {Boolean}传入字符串为数字则返回true，否则返回false
+ */
+function isNumber(data) {
+  const numberRegex = /^\d+$/;
+  return numberRegex.test(data);
+}
+
+/**
+ * @函数功能   {[判断传入字符串是否为中国境内手机号]}
+ * @param  {[string]} data 传入字符串
+ * @return {Boolean}传入字符串为手机号则返回true，否则返回false
+ */
+function isChinesePhoneNumber(data) {
+  var pattern = /^1(3\d|4[5-9]|5[0-35-9]|6[56]|7[0-8]|8\d|9[89])\d{8}$/;
+  return pattern.test(data);
+}
+
+/**
+ * @函数功能   {[判断传入字符串是否为中国境内身份证号]}
+ * @param  {[string]} idCardNumber 传入字符串
+ * @return {Boolean}传入字符串为中国境内身份证号则返回true，否则返回false
+ */
+function validateChineseIDCardNumber(idCardNumber) {
+  // 校验长度
+  if (idCardNumber.length !== 18) {
+    return false;
+  }
+
+  // 校验前17位是否为数字
+  var reg = /^\d{17}$/;
+  if (!reg.test(idCardNumber.substr(0, 17))) {
+    return false;
+  }
+
+  // 定义系数和校验码对应关系
+  var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+  var parityBit = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+
+  // 计算校验位
+  var sum = 0;
+  for (var i = 0; i < 17; i++) {
+    sum += parseInt(idCardNumber.charAt(i)) * factor[i];
+  }
+  var mod = sum % 11;
+  var parityCode = parityBit[mod];
+
+  // 校验校验位
+  if (parityCode !== idCardNumber.charAt(17).toUpperCase()) {
+    return false;
+  }
+
+  return true;
+}
